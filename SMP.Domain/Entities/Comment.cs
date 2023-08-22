@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SMP.Data.Commons;
 
-namespace SMP.Data.Entities
+namespace SMP.Data.Entities;
+
+public class Comments : Auditable
 {
-    internal class Comments
-    {
-    }
+
+
 }

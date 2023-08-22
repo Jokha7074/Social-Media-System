@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SMP.Data.Commons;
 
-namespace SMP.Data.Commons
+public class Auditable
 {
-    internal class Auditable
-    {
-    }
+    public long Id { get; set; }
+    public DateTime  CreatedAt {get;set;}
+    public DateTime UpdateddAt { get;set;}
+    public bool IsDeleted { get; set;}
 }

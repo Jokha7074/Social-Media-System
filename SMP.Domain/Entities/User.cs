@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography.X509Certificates;
 
-namespace SMP.Data.Entities
+namespace SMP.Data.Entities;
+
+public class Users
 {
-    internal class Users
-    {
-    }
+    public long UserName { get; set; }  
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string PasswordHash { get; set; }
+    public string Salt { get; set; }
 }
