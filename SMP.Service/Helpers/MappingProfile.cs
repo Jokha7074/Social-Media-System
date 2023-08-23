@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using SMP.Data.Entities;
+using SMP.Service.DTOs.Users;
 
-namespace SMP.Service.Helpers
+namespace SMP.Service.Helpers;
+
+public class MappingProfile : Profile
 {
-    internal class MappingProfile
+    public MappingProfile()
     {
+        //User
+        CreateMap<UserCreateDto, User>().ReverseMap();
+        CreateMap<UserResultDto, User>().ReverseMap();
+        CreateMap<UserUpadeDto, User>().ReverseMap();
     }
 }

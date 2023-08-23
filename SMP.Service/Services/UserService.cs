@@ -1,19 +1,23 @@
 ﻿using AutoMapper;
+using SMP.Data.Entities;
 using SMP.Data.IRepositories;
 using SMP.Service.DTOs.Users;
 using SMP.Service.Exceptions;
+using SMP.Service.Helpers;
 using SMP.Service.IRepositories;
 
 namespace SMP.Service.Services;
 
 public class UserService : IUserService
 {
-    public IMapper Mapper;
-    public IRepository Repository;
-    public UserService()
+    public IMapper mapper;
+    public IRepository<User> repository;
+    public UserService(IRepository<User> repository)
     {
-        
+        this.mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>())); 
+        this.repository = repository;
     }
+
     public Task<UserResultDto> AddAsync(UserCreateDto dto)
     {
         throw new AlreadyExistException("This user allready exist");

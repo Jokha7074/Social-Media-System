@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SMP.Data.Entities;
 
-namespace SMP.Service.Exceptions
+namespace SMP.Service.Exceptions;
+
+public class AlreadyExistException : Exception
 {
-    internal class AlreadyExistException
+    public AlreadyExistException(string message) : base(message)
+    {
+    }
+
+    public AlreadyExistException(string message, Exception exception) : base(message, exception)
     {
     }
 }

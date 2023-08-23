@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SMP.Service.DTOs.Users;
 
-namespace SMP.Service.IRepositories
+namespace SMP.Service.IRepositories;
+
+public interface IUserService
 {
-    internal interface IUserService
-    {
-    }
+    Task<UserResultDto> AddAsync(UserCreateDto dto);
+    Task<UserResultDto> ModifiedAsync(UserUpadeDto dto);
+    Task<bool> Remove(long Id);
+    Task<UserResultDto> RetriveredById(long Id);
 }

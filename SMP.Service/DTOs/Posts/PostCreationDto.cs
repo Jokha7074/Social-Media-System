@@ -1,5 +1,4 @@
-﻿using SMP.Data.Entities;
-using SMP.Data.Enums;
+﻿using SMP.Data.Enums;
 
 namespace SMP.Service.kkeDTOs;
 
