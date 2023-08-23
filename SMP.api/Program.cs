@@ -1,6 +1,12 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using SMP.Data.DbContexts;
+using SMP.Data.IRepositories;
+using SMP.Data.Repositories;
+using SMP.Service.Helpers;
+using SMP.Service.IRepositories;
+using SMP.Service.Services;
 using System.ComponentModel;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +19,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(option => option.UseNpgsql(builder.Configuration.GetConnectionString("DefoultConnection")));
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
 
 var app = builder.Build();
 

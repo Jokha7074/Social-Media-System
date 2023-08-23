@@ -2,15 +2,16 @@
 
 namespace SMP.Domain.Security;
 
-public class Hasher
+public static  class PasswordHash
 {
-    public (string  Passwordhash, string Salt) PasswordHash(string password)
+    public static (string  Passwordhash, string Salt) Hasher(string password)
     {
         string salt = Guid.NewGuid().ToString();
         string hash = BCrypt.Net.BCrypt.HashPassword(salt+password);
         return (hash,salt);
     }
-    public bool Verify(string password, string hash, string salt)
+
+    public static bool Verify(string password, string hash, string salt)
     {
         return BCrypt.Net.BCrypt.Verify(password,hash+salt);    
     }

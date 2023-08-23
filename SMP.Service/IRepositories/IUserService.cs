@@ -5,7 +5,8 @@ namespace SMP.Service.IRepositories;
 public interface IUserService
 {
     Task<UserResultDto> AddAsync(UserCreateDto dto);
-    Task<UserResultDto> ModifiedAsync(UserUpadeDto dto);
-    Task<bool> Remove(long Id);
-    Task<UserResultDto> RetriveredById(long Id);
+    Task<UserResultDto> ModifyAsync(UserUpadeDto dto);
+    Task<bool> RemoveAsync(long Id);
+    Task<UserResultDto> RetrieveByIdAsync(long Id);
+    IEnumerable<UserResultDto> RetrieveAll();
 }

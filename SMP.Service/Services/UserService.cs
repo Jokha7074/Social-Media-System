@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SMP.Data.Entities;
 using SMP.Data.IRepositories;
+using SMP.Domain.Security;
 using SMP.Service.DTOs.Users;
 using SMP.Service.Exceptions;
 using SMP.Service.Helpers;
@@ -14,27 +15,75 @@ public class UserService : IUserService
     public IRepository<User> repository;
     public UserService(IRepository<User> repository)
     {
-        this.mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>())); 
+        this.mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>()));
         this.repository = repository;
     }
 
-    public Task<UserResultDto> AddAsync(UserCreateDto dto)
+    public async Task<UserResultDto> AddAsync(UserCreateDto dto)
     {
-        throw new AlreadyExistException("This user allready exist");
+        var existUser = await repository.GetAsync(x => x.Email == dto.Email && x.IsDeleted == false);
+        if (existUser is not null)
+            throw new AlreadyExistException("This user allready exist");
+
+        var hashSalt = PasswordHash.Hasher(dto.PasswordHash);
+
+        var user = mapper.Map<User>(dto);
+
+        user.Salt = hashSalt.Salt;
+        user.PasswordHash = hashSalt.Passwordhash;
+
+        await repository.CreateAsync(user);
+        await repository.SaveAsync();
+
+        var result = mapper.Map<UserResultDto>(user);
+        return result;
     }
 
-    public Task<UserResultDto> ModifiedAsync(UserUpadeDto dto)
+    public async Task<UserResultDto> ModifyAsync(UserUpadeDto dto)
     {
-        throw new NotImplementedException();
+        var user = await repository.GetAsync(x => x.Id == dto.Id && x.IsDeleted == false);
+        if (user is null)
+            throw new NotFoundException("This user is not found");
+
+        var hashSalt = PasswordHash.Hasher(dto.PasswordHash);
+
+        dto.Salt = hashSalt.Salt;
+        dto.PasswordHash = hashSalt.Passwordhash;
+
+        var modifiedUser = mapper.Map(dto, user);
+        await repository.SaveAsync();
+
+        var result = mapper.Map<UserResultDto>(user);
+        return result;
     }
 
-    public Task<bool> Remove(long Id)
+    public async Task<bool> RemoveAsync(long Id)
     {
-        throw new NotImplementedException();
+        var user = await repository.GetAsync(x => x.Id == Id);
+        if (user is null)
+            return false;
+
+        repository.Delete(user);
+        await repository.SaveAsync();
+
+        return true;
     }
 
-    public Task<UserResultDto> RetriveredById(long Id)
+    public IEnumerable<UserResultDto> RetrieveAll()
     {
-        throw new NotImplementedException();
+        var users = repository.GetAll().Where(x => x.IsDeleted == false);
+
+        var resultUsers = mapper.Map<IEnumerable<UserResultDto>>(users);
+        return resultUsers;
+    }
+
+    public async Task<UserResultDto> RetrieveByIdAsync(long Id)
+    {
+        var user = await repository.GetAsync(x => x.Id == Id && x.IsDeleted == false);
+        if (user is null)
+            throw new NotFoundException("This user is not found");
+
+        var result = mapper.Map<UserResultDto>(user);
+        return result;
     }
 }
