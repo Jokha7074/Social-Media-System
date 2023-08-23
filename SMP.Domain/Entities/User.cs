@@ -1,9 +1,12 @@
-﻿using SMP.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SMP.Data.Commons;
+using SMP.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
 
 namespace SMP.Data.Entities;
 
-public class User
+public class User : Auditable
 {
     public long UserName { get; set; }  
     public string FirstName { get; set; }

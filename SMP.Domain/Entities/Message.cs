@@ -14,6 +14,6 @@ public class Message : Auditable
     public User RecipientUser { get; set; }
 
     public long CommentId { get; set; }
-    public Comment Comments { get; set; }
+    public Comment Comment { get; set; }
 
 }
